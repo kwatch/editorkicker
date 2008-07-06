@@ -1,11 +1,11 @@
 
 if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
-  require 'editor_client'
+  require 'editor_kicker'
 
-  module ::EditorClient
+  module ::EditorKicker
 
-    class RailsHandler < BaseHandler
+    class RailsExceptionHandler < ExceptionHandler
 
       ## detect filepath and linenum
       def detect_location(exception)
@@ -16,7 +16,7 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
     end
 
-    self.handler = RailsHandler.new
+    self.handler = RailsExceptionHandler.new
 
   end
 
@@ -29,13 +29,13 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
       def rescue_action_locally(exception)  # :nodoc:
         ret = _rescue_action_locally_orig(exception) # call original
-        ::EditorClient.handle(exception)
+        ::EditorKicker.handle_exception(exception)
         ret
       end
 
     end
   end
 
-  ::ActionController::Base.new.logger.info("** [EditorClient] loaded.")
+  ::ActionController::Base.new.logger.info("** [EditorKicker] loaded.")
 
 end

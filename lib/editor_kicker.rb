@@ -9,9 +9,9 @@
 ##
 ## Don't forget to do `M-x server-start' in your Emacs.
 ##
-module EditorClient
+module EditorKicker
 
-  def self.handle(exception)
+  def self.handle_exception(exception)
     self.handler.handle(exception)
   end
 
@@ -23,7 +23,7 @@ module EditorClient
     @@handler = handler
   end
 
-  class BaseHandler
+  class ExceptionHandler
 
     def initialize
       bin = '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
@@ -62,20 +62,20 @@ module EditorClient
         log("#{filepath}: not found.") if @verbose
         return
       end
-      #format = ENV['EDITOR_CLIENT_COMMAND'] || "#{@emacsclient} -n +%2$ss '%1$s'"
+      #format = ENV['EDITOR_KICKER_COMMAND'] || "#{@emacsclient} -n +%2$ss '%1$s'"
       #command = format % [filepath, linenum]
-      format = ENV['EDITOR_CLIENT_COMMAND'] || "#{@emacsclient} -n +%s '%s'"
+      format = ENV['EDITOR_KICKER_COMMAND'] || "#{@emacsclient} -n +%s '%s'"
       command = format % [linenum, filepath]
       log(command) if @verbose
       `#{command}`
     end
 
     def log(message)
-      $stderr.puts "** [EditorClient] #{message}"
+      $stderr.puts "** [EditorKicker] #{message}"
     end
 
   end
 
-  self.handler = BaseHandler.new
+  self.handler = ExceptionHandler.new
 
 end
