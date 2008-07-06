@@ -7,7 +7,7 @@
 ##
 ## Open errored file by emacsclient.
 ##
-## Don't forget to do `M-x server-start' in your Emacs.
+## Don't forget to do `M-x server-start' if you use Emacs.
 ##
 module EditorKicker
 
@@ -26,13 +26,15 @@ module EditorKicker
   class ExceptionHandler
 
     def initialize
-      bin = '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
-      @emacsclient = ENV['EMACSCLIENT'] || (File.exist?(bin) ? bin : "emacsclient")
+      bin = '/Applications/TextMate.app/Contents/Resources/mate'
+      @command = ENV['EDITOR_KICKER'] || \
+                 (test(?f, bin) ? "#{bin} -l %s '%s'" : "emacsclient -n +%s '%s'")
+                 #(test(?f, bin) ? "#{bin} -l " : "emacsclient -n +") + "%2$s '%1$s'"
       @kicker = self   # you can set Proc object to @kicker
       @verbose = true
     end
 
-    attr_accessor :emacsclient, :kicker, :verbose
+    attr_accessor :command, :kicker, :verbose
 
     ## detect error location from exception and open related file
     def handle(exception)
@@ -56,7 +58,7 @@ module EditorKicker
       return filepath, linenum
     end
 
-    ## open file by emacsclient (or other)
+    ## open file with editor
     def kick(filepath, linenum)
       if File.exists?(filepath)
         @kicker.call(filepath, linenum)
@@ -67,10 +69,7 @@ module EditorKicker
 
     ## default activity of kick()
     def call(filepath, linenum)
-      #format = ENV['EDITOR_KICKER_COMMAND'] || "#{@emacsclient} -n +%2$s '%1$s'"
-      #command = format % [filepath, linenum]
-      format = ENV['EDITOR_KICKER_COMMAND'] || "#{@emacsclient} -n +%s '%s'"
-      command = format % [linenum, filepath]
+      command = @command % [linenum, filepath]  # or [filepath, linenum]
       log(command) if @verbose
       `#{command}`
     end
