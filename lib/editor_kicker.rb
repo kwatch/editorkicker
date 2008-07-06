@@ -31,10 +31,9 @@ module EditorKicker
                  (test(?f, bin) ? "#{bin} -l %s '%s'" : "emacsclient -n +%s '%s'")
                  #(test(?f, bin) ? "#{bin} -l " : "emacsclient -n +") + "%2$s '%1$s'"
       @kicker = self   # you can set Proc object to @kicker
-      @verbose = true
     end
 
-    attr_accessor :command, :kicker, :verbose
+    attr_accessor :command, :kicker
 
     ## detect error location from exception and open related file
     def handle(exception)
@@ -63,14 +62,14 @@ module EditorKicker
       if File.exists?(filepath)
         @kicker.call(filepath, linenum)
       else
-        log("#{filepath}: not found.") if @verbose
+        log("#{filepath}: not found.")
       end
     end
 
     ## default activity of kick()
     def call(filepath, linenum)
       command = @command % [linenum, filepath]  # or [filepath, linenum]
-      log(command) if @verbose
+      log(command)
       `#{command}`
     end
 
