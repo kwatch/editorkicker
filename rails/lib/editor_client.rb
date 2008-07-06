@@ -7,15 +7,7 @@
 ##
 ## Open errored file by emacsclient.
 ##
-## - Don't forget to do `M-x server-start' in your Emacs.
-##
-## - If you want to specify emacsclient command name, set
-##   <tt>RoR::OpenErrfile.handler.emacsclient = '...emacsclient command path...'</tt>.
-##
-## - If you want to customize command to open file by your favorite editor, set
-##   <tt>RoR::OpenErrfile.handler.command = proc {|filepath, linenum| ... }</tt>
-##   or set environment variable $OPEN_ERRFILE_COMMAND
-##   (ex. <tt>export OPEN_ERRFILE_COMMAND="emacsclient -n +%s '%s'"</tt>).
+## Don't forget to do `M-x server-start' in your Emacs.
 ##
 module EditorClient
 
@@ -31,15 +23,16 @@ module EditorClient
     @@handler = handler
   end
 
-  class DefaultHandler
+  class BaseHandler
 
     def initialize
       bin = '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
       @emacsclient = ENV['EMACSCLIENT'] || (File.exist?(bin) ? bin : "emacsclient")
       @command = self   # you can set Proc object to @command
+      @verbose = true
     end
 
-    attr_accessor :emacsclient, :command
+    attr_accessor :emacsclient, :command, :verbose
 
     ## detect error location from exception and open related file
     def handle(exception)
@@ -47,10 +40,10 @@ module EditorClient
       @command.call(filepath, linenum) if filepath && linenum
     end
 
-    ## detect filepath and linenum
+    ## get filename and linenum from exception
     def detect_location(exception)
       filepath = linenum = nil
-      backtrace = exception.application_backtrace
+      backtrace = exception.backtrace
       if backtrace && backtrace.first
         if backtrace.first =~ /^(.+):(\d+):in `.+'/
           filepath, linenum = $1, $2.to_i
@@ -66,19 +59,23 @@ module EditorClient
     ## open file by emacsclient (or other)
     def call(filepath, linenum)
       unless File.exists?(filepath)
-        $stderr.puts "** OpenErrfile: #{filepath}: not found."
+        log("#{filepath}: not found.") if @verbose
         return
       end
-      #format = ENV['OPEN_ERRFILE_COMMAND'] || "#{@emacsclient} -n +%2$ss '%1$s'"
+      #format = ENV['EDITOR_CLIENT_COMMAND'] || "#{@emacsclient} -n +%2$ss '%1$s'"
       #command = format % [filepath, linenum]
-      format = ENV['OPEN_ERRFILE_COMMAND'] || "#{@emacsclient} -n +%s '%s'"
+      format = ENV['EDITOR_CLIENT_COMMAND'] || "#{@emacsclient} -n +%s '%s'"
       command = format % [linenum, filepath]
-      $stderr.puts "** OpenErrfile: #{command}"
+      log(command) if @verbose
       `#{command}`
+    end
+
+    def log(message)
+      $stderr.puts "** [EditorClient] #{message}"
     end
 
   end
 
-  self.handler = DefaultExceptionHandler.new
+  self.handler = BaseHandler.new
 
 end

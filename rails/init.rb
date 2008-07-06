@@ -1,7 +1,25 @@
 
 if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
-  require 'ror/open_errfile'
+  require 'editor_client'
+
+  module ::EditorClient
+
+    class RailsHandler < BaseHandler
+
+      ## detect filepath and linenum
+      def detect_location(exception)
+        ex = exception.dup
+        ex.set_backtrace(exception.application_backtrace)
+        return super(ex)
+      end
+
+    end
+
+    self.handler = RailsHandler.new
+
+  end
+
 
   module ::ActionController   #:nodoc:
     module Rescue   #:nodoc:
@@ -11,13 +29,13 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
       def rescue_action_locally(exception)  # :nodoc:
         ret = _rescue_action_locally_orig(exception) # call original
-        RoR::OpenErrfile.handle(exception)
+        ::EditorClient.handle(exception)
         ret
       end
 
     end
   end
 
-  ::ActionController::Base.new.logger.info("** RoR::OpenErrfile loaded.")
+  ::ActionController::Base.new.logger.info("** [EditorClient] loaded.")
 
 end
