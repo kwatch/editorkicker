@@ -28,16 +28,16 @@ module EditorKicker
     def initialize
       bin = '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
       @emacsclient = ENV['EMACSCLIENT'] || (File.exist?(bin) ? bin : "emacsclient")
-      @command = self   # you can set Proc object to @command
+      @kicker = self   # you can set Proc object to @kicker
       @verbose = true
     end
 
-    attr_accessor :emacsclient, :command, :verbose
+    attr_accessor :emacsclient, :kicker, :verbose
 
     ## detect error location from exception and open related file
     def handle(exception)
       filepath, linenum = detect_location(exception)
-      @command.call(filepath, linenum) if filepath && linenum
+      kick(filepath, linenum) if filepath && linenum
     end
 
     ## get filename and linenum from exception
@@ -57,12 +57,17 @@ module EditorKicker
     end
 
     ## open file by emacsclient (or other)
-    def call(filepath, linenum)
-      unless File.exists?(filepath)
+    def kick(filepath, linenum)
+      if File.exists?(filepath)
+        @kicker.call(filepath, linenum)
+      else
         log("#{filepath}: not found.") if @verbose
-        return
       end
-      #format = ENV['EDITOR_KICKER_COMMAND'] || "#{@emacsclient} -n +%2$ss '%1$s'"
+    end
+
+    ## default activity of kick()
+    def call(filepath, linenum)
+      #format = ENV['EDITOR_KICKER_COMMAND'] || "#{@emacsclient} -n +%2$s '%1$s'"
       #command = format % [filepath, linenum]
       format = ENV['EDITOR_KICKER_COMMAND'] || "#{@emacsclient} -n +%s '%s'"
       command = format % [linenum, filepath]
