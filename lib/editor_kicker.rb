@@ -67,7 +67,7 @@ module EditorKicker
     end
 
     ## default activity of kick()
-    def call(filepath, linenum)
+    def call(filepath, linenum)     # should separate to a class?
       command = @command % [linenum, filepath]  # or [filepath, linenum]
       log(command)
       `#{command}`

@@ -1,6 +1,6 @@
-======
-README
-======
+===================================
+EditKicker plugin for Ruby on Rails
+===================================
 
 Release: $Release$
 
@@ -8,45 +8,43 @@ Release: $Release$
 About
 -----
 
-RoR::OpenErrfile is a plugin for Ruby on Rails to open errored file
-by emacsclient automatically when error raised in development mode.
+This is a plugin for Ruby on Rails to open errored file by your favorite
+text editor (such as TextMate or Emacs) when error raised in development mode.
 
 
 Target
 ------
 
-* 2.1.X
-* 2.0.X
-* 1.2.X (I hope)
+* Rails version
+  - 2.1.X
+  - 2.0.X
+  - 1.2.X (I hope)
+
+* Supported text editor by default
+  - TextMate
+  - Emacs
 
 
 Usage
 -----
 
-1. Intall RoR::OpenErrfile plugin into your Rails application.
-2. Restart Rails server.
-3. Do 'M-x server-start' in your Emacs. (*** IMPORTANT! ***)
+1. Intall EditorKicker plugin into your Rails application.
+2. (optional) Set environtment variable $EDITOR_KICKER with command string to
+   invoke text editor (default "mate -l %s '%s'" or "emacsclient -n +%s '%s').
+3. Restart Rails server in development mode.
+4. Do 'M-x server-start' if you want to use Emacs. (*** IMPORTANT! ***)
 
 
-Environments
-------------
-
-* $EMACSCLIENT represents emacsclient command path (default 'emacsclient').
-
-* $OPEN_ERRFILE_COMMAND represents command string to open errored file
-  (default "emacsclient -n +%s '%s'").
-
-
-Customize
----------
-
-* RoR::OpenErrfile.handler.emacsclient = '/Users/yourname/bin/emacsclient'
-
-* RoR::OpenErrfile.handler.command = proc {|filepath, linenum| `open #{filepath}` }
-
-
-Autor
+Setup
 -----
+
+Environment variable $EDITOR_KICKER represents command string to invoke your
+favorite editor with filename and linenum.
+Default is "mate -l %s '%s'" or "emacsclient -n +%s '%s'".
+
+
+Author
+------
 
 makoto kuwata <kwa(at)kuwata-lab.com>
 
