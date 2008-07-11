@@ -45,8 +45,8 @@ module EditorKicker
     def detect_location(exception)
       filepath = linenum = nil
       backtrace = exception.backtrace
-      if backtrace && backtrace.first
-        if backtrace.first =~ /^(.+):(\d+):in `.+'/
+      if backtrace && !backtrace.empty?
+        if backtrace.find {|s| s =~ /^(.+):(\d+):in `.+'/ && File.writable?($1) }
           filepath, linenum = $1, $2.to_i
         end
       elsif exception.is_a?(SyntaxError)
