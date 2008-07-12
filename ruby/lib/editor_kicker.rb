@@ -84,7 +84,7 @@ module EditorKicker
     def call(filepath, linenum)     # should separate to a class?
       command = (@command || detect_command()) % [linenum, filepath]  # or [filepath, linenum]
       log(command)
-      `#{command}`
+      `#{command.untaint}`
     end
 
     def log(message)
