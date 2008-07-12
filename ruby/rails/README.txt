@@ -1,6 +1,6 @@
-===================================
-EditKicker plugin for Ruby on Rails
-===================================
+=====================================
+EditorKicker plugin for Ruby on Rails
+=====================================
 
 Release: $Release$
 
@@ -8,8 +8,8 @@ Release: $Release$
 About
 -----
 
-This is a plugin for Ruby on Rails to open errored file by your favorite
-text editor (such as TextMate or Emacs) when error raised in development mode.
+EditorKicker plugin for Ruby on Rails is a pretty utility to invoke your
+favorite editor and open errored file when error raised in development mode.
 
 
 Target
