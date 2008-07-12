@@ -33,7 +33,7 @@ module EditorKicker
       @kicker = self   # you can set Proc object to @kicker
     end
 
-    attr_accessor :command, :kicker
+    attr_accessor :command, :kicker, :check_writable
 
     ## detect error location from error and open related file
     def handle(error)
@@ -46,7 +46,8 @@ module EditorKicker
       filepath = linenum = nil
       backtrace = error.backtrace
       if backtrace && !backtrace.empty?
-        if backtrace.find {|s| s =~ /^(.+):(\d+):in `.+'/ && File.writable?($1) }
+        uncheck = !@check_writable
+        if backtrace.find {|s| s =~ /^(.+):(\d+)(:in `.+'|$)/ && (uncheck || File.writable?($1)) }
           filepath, linenum = $1, $2.to_i
         end
       elsif error.is_a?(SyntaxError)

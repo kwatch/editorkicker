@@ -7,6 +7,11 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
     class RailsErrorHandler < ErrorHandler
 
+      def initialize(*args)
+        super
+        self.check_writable = true
+      end
+
       ## detect filepath and linenum
       def detect_location(error)
         err = error.dup
