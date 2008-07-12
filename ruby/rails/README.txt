@@ -49,3 +49,9 @@ Author
 makoto kuwata <kwa(at)kuwata-lab.com>
 
 $Copyright$
+
+
+License
+-------
+
+Public Domain

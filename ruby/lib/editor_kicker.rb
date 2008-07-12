@@ -11,8 +11,8 @@
 ##
 module EditorKicker
 
-  def self.handle_exception(exception)
-    self.handler.handle(exception)
+  def self.handle_error(error)
+    self.handler.handle(error)
   end
 
   def self.handler
@@ -23,7 +23,7 @@ module EditorKicker
     @@handler = handler
   end
 
-  class ExceptionHandler
+  class ErrorHandler
 
     def initialize
       bin = '/Applications/TextMate.app/Contents/Resources/mate'
@@ -35,22 +35,22 @@ module EditorKicker
 
     attr_accessor :command, :kicker
 
-    ## detect error location from exception and open related file
-    def handle(exception)
-      filepath, linenum = detect_location(exception)
+    ## detect error location from error and open related file
+    def handle(error)
+      filepath, linenum = detect_location(error)
       kick(filepath, linenum) if filepath && linenum
     end
 
-    ## get filename and linenum from exception
-    def detect_location(exception)
+    ## get filename and linenum from error
+    def detect_location(error)
       filepath = linenum = nil
-      backtrace = exception.backtrace
+      backtrace = error.backtrace
       if backtrace && !backtrace.empty?
         if backtrace.find {|s| s =~ /^(.+):(\d+):in `.+'/ && File.writable?($1) }
           filepath, linenum = $1, $2.to_i
         end
-      elsif exception.is_a?(SyntaxError)
-        if exception.to_s =~ /^(.+):(\d+): syntax error,/
+      elsif error.is_a?(SyntaxError)
+        if error.to_s =~ /^(.+):(\d+): syntax error,/
           filepath, linenum = $1, $2.to_i
         end
       end
@@ -79,6 +79,6 @@ module EditorKicker
 
   end
 
-  self.handler = ExceptionHandler.new
+  self.handler = ErrorHandler.new
 
 end
