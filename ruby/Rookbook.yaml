@@ -1,0 +1,34 @@
+
+properties:
+
+  - project:	editor_kicker
+  - libfile:	lib/$(project).rb
+  - copyright:  Copyright 2008 kuwata-lab.com all rights reserved.
+  - release:	0.0.1
+  - author:	makoto kuwata <kwa(at)kuwata-lab.com>
+  - license:	MIT License
+
+
+recipes:
+
+  - product:	:rails
+    method*: |
+	## create build directory
+	dir = "build/rails/#{@project}"
+	#dir = "rails/plugin/#{@project}"
+	rm_rf dir
+	mkdir_p dir
+	## copy files
+	cp 'rails/README.txt', 'rails/init.rb', dir
+	mkdir "#{dir}/lib"
+	cp @libfile, "#{dir}/lib"
+	## edit files
+	edit "#{dir}/**/*" do |content|
+	  content.gsub! /\$Release\$/,    @release
+	  content.gsub! /\$Release:.*\$/, '$Release: #{@release} $'
+	  content.gsub! /\$Copyright\$/,  @copyright
+	  content.gsub! /\$Author\$/,     @author
+	  content.gsub! /\$License\$/,    @license
+	  content
+	end
+

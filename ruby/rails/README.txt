@@ -46,7 +46,7 @@ Default is "mate -l %s '%s'" or "emacsclient -n +%s '%s'".
 Author
 ------
 
-makoto kuwata <kwa(at)kuwata-lab.com>
+$Author$
 
 $Copyright$
 
@@ -54,4 +54,4 @@ $Copyright$
 License
 -------
 
-Public Domain
+$License$
