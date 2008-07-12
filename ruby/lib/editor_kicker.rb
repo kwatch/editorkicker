@@ -27,6 +27,7 @@ module EditorKicker
 
     def initialize
       @kicker = self   # you can set Proc object to @kicker
+      @check_writable = false
     end
 
     attr_accessor :command, :kicker, :check_writable
@@ -42,9 +43,9 @@ module EditorKicker
       filepath = linenum = nil
       backtrace = error.backtrace
       if backtrace && !backtrace.empty?
-        uncheck = !@check_writable
-        if backtrace.find {|s| s =~ /^(.+):(\d+)(:in `.+'|$)/ && (uncheck || File.writable?($1)) }
-          filepath, linenum = $1, $2.to_i
+        tuple = nil
+        if backtrace.find {|str| tuple = get_location(str) }
+          filepath, linenum = tuple
         end
       elsif error.is_a?(SyntaxError)
         if error.to_s =~ /^(.+):(\d+): syntax error,/
@@ -52,6 +53,13 @@ module EditorKicker
         end
       end
       return filepath, linenum
+    end
+
+    ## get filepath and linenum from string
+    def get_location(str)
+      return nil if str !~ /^(.+):(\d+)(:in `.+'|$)/
+      return nil if @check_writable && !File.writable($1)
+      return [$1, $2.to_i]
     end
 
     ## detect command to invoke editor
