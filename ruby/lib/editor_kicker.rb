@@ -26,10 +26,6 @@ module EditorKicker
   class ErrorHandler
 
     def initialize
-      bin = '/Applications/TextMate.app/Contents/Resources/mate'
-      @command = ENV['EDITOR_KICKER'] || \
-                 (test(?f, bin) ? "#{bin} -l %s '%s'" : "emacsclient -n +%s '%s'")
-                 #(test(?f, bin) ? "#{bin} -l " : "emacsclient -n +") + "%2$s '%1$s'"
       @kicker = self   # you can set Proc object to @kicker
     end
 
@@ -58,6 +54,15 @@ module EditorKicker
       return filepath, linenum
     end
 
+    ## detect command to invoke editor
+    def detect_command
+      command = ENV['EDITOR_KICKER']
+      return command if command
+      bin = '/Applications/TextMate.app/Contents/Resources/mate'
+      return "#{bin} -l %s '%s'" if test(?f, bin)
+      return "emacsclient -n +%s '%s'"
+    end
+
     ## open file with editor
     def kick(filepath, linenum)
       if File.exists?(filepath)
@@ -69,7 +74,7 @@ module EditorKicker
 
     ## default activity of kick()
     def call(filepath, linenum)     # should separate to a class?
-      command = @command % [linenum, filepath]  # or [filepath, linenum]
+      command = (@command || detect_command()) % [linenum, filepath]  # or [filepath, linenum]
       log(command)
       `#{command}`
     end
