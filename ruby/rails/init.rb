@@ -13,10 +13,12 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
       end
 
       ## detect filepath and linenum
-      def detect_location(error)
-        err = error.dup
-        err.set_backtrace(error.application_backtrace)
-        return super(err)
+      def detect_location(error, backtrace=nil)
+        #err = error.dup
+        #err.set_backtrace(error.application_backtrace)
+        #return super(error)   # doesn't work correctly for TemplateError
+        backtrace = error.respond_to?(:application_backtrace) ? error.application_backtrace : nil
+        return super(error, backtrace)
       end
 
     end

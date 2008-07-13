@@ -39,9 +39,11 @@ module EditorKicker
     end
 
     ## get filename and linenum from error
-    def detect_location(error)
+    def detect_location(error, backtrace=nil)
       filepath = linenum = nil
-      backtrace = error.backtrace
+      backtrace ||= error.backtrace
+      $stderr.puts "*** debug: backtrace=#{backtrace.inspect}"
+      
       if backtrace && !backtrace.empty?
         tuple = nil
         if backtrace.find {|str| tuple = get_location(str) }
@@ -58,7 +60,7 @@ module EditorKicker
     ## get filepath and linenum from string
     def get_location(str)
       return nil if str !~ /^(.+):(\d+)(:in `.+'|$)/
-      return nil if @check_writable && !File.writable($1)
+      return nil if @check_writable && !File.writable?($1)
       return [$1, $2.to_i]
     end
 
