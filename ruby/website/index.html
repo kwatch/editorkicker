@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>EditorKicker: README.txt</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>EditorKicker: README.txt</h1>
+
+  <p>Release: 0.1.0</p>
+
+  <p>Copyright 2008 kuwata-lab.com all rights reserved.</p>
+
+  <p><a href="http://rubyforge.org/projects/editorkicker/">http://rubyforge.org/projects/editorkicker/</a></p>
+
+  <h2>About</h2>
+
+  <p>EditorKicker is a pretty utility to invoke your favorite editor and open errored file when CGI script or Rails program cause error.</p>
+
+  <h2>Install</h2>
+
+  <p>(for Ruby on Rails)</p>
+  <pre>
+$ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plugin/rails/editorkicker
+</pre>
+
+  <p>(for CGI/mod_ruby)</p>
+
+  <p>You must install cgi-exception library as well as EditorKicker.</p>
+  <pre>
+## install EditorKicker
+$ sudo gem install editorkicker
+## or
+$ cd /tmp
+$ wget http://rubyforge.org/projects/editorkicker/.../editorkicker-XXX.tar.gz
+$ tar xzf editorkicker-XXX.tar.gz
+$ cd editorkicker-XXX/
+$ sudo ruby install.rb
+
+## install cgi-exception
+$ sudo gem install cgi-exception
+## or
+$ cd /tmp
+$ wget http://rubyforge.org/projects/cgi-exception
+$ tar xzf cgi-exception-XXX.tar.gz
+$ cd cgi-exception-XXX/
+$ sudo ruby install.rb
+</pre>
+
+  <p>It is not recommended to install by RubyGems, because 'require rubygems' is an heavy-weight operation for CGI.</p>
+
+  <h2>Usage</h2>
+
+  <p>ATTENTION! Don't forget to call 'M-x server-start' if you're Emacs user.</p>
+
+  <p>(for Ruby on Rails)</p>
+  <pre>
+$ export EDITOR_KICKER="mate -n %s '%s'"             (for TextMate)
+$ export EDITOR_KICKER="emacsclient -n +%s '%s'"     (for Emacs)
+$ ruby script/server          # development mode
+</pre>
+
+  <p>Setting of $EDITOR_KICKER is optional. If $EDITOR_KICKER is not set, EditorKicker will detect TextMate or Emacs automatically.</p>
+
+  <p>(for CGI/mod_ruby)</p>
+  <pre>
+#!/usr/bin/env ruby
+require 'cgi'
+require 'cgi_exception'
+
+### load and set up editor-kicker only when running in local machine
+if ENV['SERVER_NAME'] == 'localhost'
+  require 'editor_kicker'
+  ## for TextMate
+  mate = '/Applications/TextMate.app/Contents/Resources/mate'
+  ENV['EDITOR_KICKER'] = "#{mate} -l %s '%s'"
+  ## for Emacs
+  emacsclient = '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
+  ENV['EDITOR_KICKER'] = "#{emacsclient} -n -s /tmp/emacs501/server +%s '%s'"
+end
+
+cgi = CGI.new
+print cgi.header
+print "&lt;h1&gt;Hello&lt;/h1&gt;"
+...
+</pre>
+
+  <p>If you're Emacs user, you have to make socket file (ex. /tmp/emacsXXX/server) to be accessible by CGI/mod_ruby process.</p>
+  <pre>
+### assume that CGI script is executed by 'daemon' user.
+$ chmod a+x /tmp/emacs501
+$ chmod 666 /tmp/emacs501/server
+$ sudo chown daemon /tmp/emacs501/server
+</pre>
+
+  <h2>Trouble shooting</h2>
+
+  <h3>(Emacs) can't find socket</h3>
+
+  <p>Error:</p>
+  <pre>
+emacsclient: can't find socket; have you started the server?
+To start the server in Emacs, type "M-x server-start".
+</pre>
+
+  <p>Solution:</p>
+
+  <p>Type 'M-x server start' in your Emacs. In addition if you are CGI user, set $EDITOR_KICKER environment variable to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" to specify socket file by '-s' option. (Notice that '-s' optio of emacsclient is available from Emacs 22.)</p>
+
+  <h2>Todo</h2>
+
+  <ul>
+    <li>FastCGI support</li>
+
+    <li>Rack support</li>
+  </ul>
+
+  <h2>Author</h2>
+
+  <p>$Author$ &lt;$Email$&gt;</p>
+
+  <p>Copyright 2008 kuwata-lab.com all rights reserved.</p>
+
+  <h2>License</h2>
+
+  <p>MIT License</p>
+</body>
+</html>

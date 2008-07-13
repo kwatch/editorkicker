@@ -15,6 +15,7 @@ preparation*: |
 
 properties:
 
+  - project:	EditorKicker
   - basename:	editorkicker
   - libfile:	lib/editor_kicker.rb
   - copyright:  Copyright 2008 kuwata-lab.com all rights reserved.
@@ -69,3 +70,40 @@ recipes:
   - product:	:clean
     method*: |
 	rm_rf "rails/plugin"
+
+  - product:	:index
+    ingreds:	[ website/index.html ]
+
+  - product:	website/index.html
+    method*: |
+        filename = 'README.txt'
+        download_url = "http://rubyforge.org/projects/$(basename)/"
+        sys "rd2 #{filename} | tidy -q -i -wrap 9999 -ashtml > #{@product}"
+        edit @product do |content|
+          body = (content =~ /<body>.*<\/body>/m) && $&
+          body.gsub! /<h1>.*<\/h1>/, "<h1>$(project): README.txt</h1>"
+          body.gsub! /README-$(project)/, 'README'
+          body.gsub! /<!-- RDLabel: ".*" -->/, ''
+          body.gsub! /(<h\d>)<a name=".*?" id=".*?">/, '\1'
+          body.gsub! /<\/a>(<\/h\d>)/, '\1'
+          body.gsub! /\$Release\$/, '$(release)'
+          body.gsub! /\$Release:.*?\$/, '$Release: $(release) $'
+          body.gsub! /\$Copyright\$/, '$(copyright)'
+          body.gsub! /\$License\$/, '$(license)'
+	  body.gsub! /copyright\(c\)/, 'copyright&copy;'
+          body.sub! /http:\/\/rubyforge.org\/projects\/$(basename)\//, '<a href="\&">\&</a>'
+          body.sub! /$(basename)-$(release)\.tar\.gz/, "<a href=\"#{download_url}\">\\&</a>"
+          html = <<END
+        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+        <html lang="en">
+        <head>
+          <title>$(project): README.txt</title>
+          <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+          <link rel="stylesheet" type="text/css" href="style.css">
+        </head>
+        #{body}
+        </html>
+        END
+          content[0..-1] = html
+          content
+        end
