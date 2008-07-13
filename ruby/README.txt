@@ -48,7 +48,7 @@ is an heavy-weight operation for CGI.
 
 
 
-== Usage
+== Setup
 
 ATTENTION!  Don't forget to call 'M-x server-start' if you're Emacs user.
 
@@ -116,7 +116,8 @@ file by '-s' option.
 == Todo
 
 * FastCGI support
-* Rack support
+* Merb support
+* Mack support
 
 
 

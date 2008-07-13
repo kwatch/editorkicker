@@ -25,10 +25,13 @@ properties:
   - license:	MIT License
 
 parameters:
-  - rook_product:  :packages
+  - rook_product:  :all
 
 
 recipes:
+
+  - product:	:all
+    ingreds:	[ :rails, :packages, :index ]
 
   - product:	:rails
     method*: |
@@ -55,7 +58,7 @@ recipes:
 	cp %W[MIT-LICENSE README.txt CHANGES.txt setup.rb #{@basename}.gemspec], dir
 	store @libfile, dir
 	## copy rails plug-in
-	store "rails/plugin/#{@basename}/**/*", dir
+	store "plugin/rails/#{@basename}/**/*", dir
 	## edit files
 	replace_keywords("#{dir}/**/*")
 	## create packages
@@ -79,6 +82,7 @@ recipes:
         filename = 'README.txt'
         download_url = "http://rubyforge.org/projects/$(basename)/"
         sys "rd2 #{filename} | tidy -q -i -wrap 9999 -ashtml > #{@product}"
+	replace_keywords(@product)
         edit @product do |content|
           body = (content =~ /<body>.*<\/body>/m) && $&
           body.gsub! /<h1>.*<\/h1>/, "<h1>$(project): README.txt</h1>"
@@ -86,10 +90,10 @@ recipes:
           body.gsub! /<!-- RDLabel: ".*" -->/, ''
           body.gsub! /(<h\d>)<a name=".*?" id=".*?">/, '\1'
           body.gsub! /<\/a>(<\/h\d>)/, '\1'
-          body.gsub! /\$Release\$/, '$(release)'
-          body.gsub! /\$Release:.*?\$/, '$Release: $(release) $'
-          body.gsub! /\$Copyright\$/, '$(copyright)'
-          body.gsub! /\$License\$/, '$(license)'
+          #body.gsub! /\$Release\$/, '$(release)'
+          #body.gsub! /\$Release:.*?\$/, '$Release: $(release) $'
+          #body.gsub! /\$Copyright\$/, '$(copyright)'
+          #body.gsub! /\$License\$/, '$(license)'
 	  body.gsub! /copyright\(c\)/, 'copyright&copy;'
           body.sub! /http:\/\/rubyforge.org\/projects\/$(basename)\//, '<a href="\&">\&</a>'
           body.sub! /$(basename)-$(release)\.tar\.gz/, "<a href=\"#{download_url}\">\\&</a>"
