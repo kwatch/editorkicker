@@ -1,11 +1,11 @@
-###
-### $Rev$
-### $Release: $
-### $Copyright$
-###
+##
+## $Rev$
+## $Release: $
+## $Copyright$
+##
 
 ##
-## Open errored file by emacsclient.
+## Invoke your favorite editor and Open errored file by it.
 ##
 ## Don't forget to do `M-x server-start' if you use Emacs.
 ##
@@ -42,8 +42,6 @@ module EditorKicker
     def detect_location(error, backtrace=nil)
       filepath = linenum = nil
       backtrace ||= error.backtrace
-      $stderr.puts "*** debug: backtrace=#{backtrace.inspect}"
-      
       if backtrace && !backtrace.empty?
         tuple = nil
         if backtrace.find {|str| tuple = get_location(str) }
