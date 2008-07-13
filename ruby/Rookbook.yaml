@@ -1,12 +1,30 @@
+preparation*: |
+
+      def replace_keywords(files)
+	edit files do |content|
+	  content.gsub! /\$Release\$/,    @release
+	  content.gsub! /\$Release:.*\$/, '$Release: #{@release} $'
+	  content.gsub! /\$Copyright\$/,  @copyright
+	  content.gsub! /\$Author\$/,     @author
+	  content.gsub! /\$Email\$/,      @email
+	  content.gsub! /\$License\$/,    @license
+	  content
+	end
+      end
+
 
 properties:
 
-  - basename:	editor_kicker
-  - libfile:	lib/$(basename).rb
+  - basename:	editorkicker
+  - libfile:	lib/editor_kicker.rb
   - copyright:  Copyright 2008 kuwata-lab.com all rights reserved.
   - release:	0.1.0
-  - author:	makoto kuwata <kwa(at)kuwata-lab.com>
+  - author:	makoto kuwata
+  - email:	kwa(at)kuwata-lab.com
   - license:	MIT License
+
+parameters:
+  - rook_product:  :packages
 
 
 recipes:
@@ -14,21 +32,40 @@ recipes:
   - product:	:rails
     method*: |
 	## create build directory
-	dir = "build/rails/#{@basename}"
-	#dir = "rails/plugin/#{@basename}"
+	#dir = "build/rails/#{@basename}"
+	dir = "plugin/rails/#{@basename}"
 	rm_rf dir
 	mkdir_p dir
 	## copy files
-	cp 'MIT-LICENSE', 'rails/README.txt', 'rails/init.rb', dir
+	cp %W[MIT-LICENSE CHANGES.txt plugin/rails/README.txt plugin/rails/init.rb], dir
 	store @libfile, dir
 	## edit files
-	edit "#{dir}/**/*" do |content|
-	  content.gsub! /\$Release\$/,    @release
-	  content.gsub! /\$Release:.*\$/, '$Release: #{@release} $'
-	  content.gsub! /\$Copyright\$/,  @copyright
-	  content.gsub! /\$Author\$/,     @author
-	  content.gsub! /\$License\$/,    @license
-	  content
+	replace_keywords("#{dir}/**/*")
+
+  - product:	:packages
+    ingreds:	[ :rails ]
+    method*: |
+	## create build directory
+	pkgname = "#{@basename}-#{@release}"
+	dir = "build/#{pkgname}"
+	rm_rf dir
+	mkdir_p dir
+	## copy files
+	cp %W[MIT-LICENSE README.txt CHANGES.txt setup.rb #{@basename}.gemspec], dir
+	store @libfile, dir
+	## copy rails plug-in
+	store "rails/plugin/#{@basename}/**/*", dir
+	## edit files
+	replace_keywords("#{dir}/**/*")
+	## create packages
+	chdir 'build' do
+	  tar_czf "#{pkgname}.tar.gz", pkgname
+	end
+	chdir dir do
+	  `ruby #{@basename}.gemspec`
+	  mv "#{pkgname}.gem", '..' if test(?f, "#{pkgname}.gem")
 	end
 
-  - 
+  - product:	:clean
+    method*: |
+	rm_rf "rails/plugin"

@@ -19,13 +19,15 @@ and open errored file when CGI script or Rails program cause error.
 
 (for Ruby on Rails)
 
-    $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/rails/plugin/editorkicker
+    $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plugin/rails/editorkicker
 
 (for CGI/mod_ruby)
 
 You must install cgi-exception library as well as EditorKicker.
 
     ## install EditorKicker
+    $ sudo gem install editorkicker
+    ## or
     $ cd /tmp
     $ wget http://rubyforge.org/projects/editorkicker/.../editorkicker-XXX.tar.gz
     $ tar xzf editorkicker-XXX.tar.gz
@@ -33,6 +35,8 @@ You must install cgi-exception library as well as EditorKicker.
     $ sudo ruby install.rb
   
     ## install cgi-exception
+    $ sudo gem install cgi-exception
+    ## or
     $ cd /tmp
     $ wget http://rubyforge.org/projects/cgi-exception
     $ tar xzf cgi-exception-XXX.tar.gz
@@ -84,6 +88,7 @@ to be accessible by CGI/mod_ruby process.
 
     ### assume that CGI script is executed by 'daemon' user.
     $ chmod a+x /tmp/emacs501
+    $ chmod 666 /tmp/emacs501/server
     $ sudo chown daemon /tmp/emacs501/server
 
 
@@ -117,7 +122,7 @@ file by '-s' option.
 
 == Author
 
-$Author$
+$Author$ <$Email$>
 
 $Copyright$
 

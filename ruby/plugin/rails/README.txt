@@ -46,7 +46,7 @@ Default is "mate -l %s '%s'" or "emacsclient -n +%s '%s'".
 Author
 ------
 
-$Author$
+$Author$ <$Email$>
 
 $Copyright$
 
