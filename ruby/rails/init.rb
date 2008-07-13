@@ -14,11 +14,17 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
       ## detect filepath and linenum
       def detect_location(error, backtrace=nil)
-        #err = error.dup
-        #err.set_backtrace(error.application_backtrace)
-        #return super(error)   # doesn't work correctly for TemplateError
-        backtrace = error.respond_to?(:application_backtrace) ? error.application_backtrace : nil
-        return super(error, backtrace)
+        if error.is_a?(ActionView::TemplateError)
+          # assert error.respond_to?(:file_name)
+          # assert error.respond_to?(:line_number)
+          filepath, linenum = error.file_name, error.line_number
+          if filepath && linenum
+            filepath = "app/views/#{filepath}" unless filepath[0] == ?/ || filepath =~ /\Aapp\/views\//
+            return filepath, linenum
+          end
+        end
+        # assert error.respond_to?(:application_backtrace)
+        return super(error, error.application_backtrace)
       end
 
     end
