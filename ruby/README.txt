@@ -4,7 +4,7 @@ Release: $Release$
 
 $Copyright$
 
-http://rubyforge.org/projects/editor-kicker/
+http://rubyforge.org/projects/editorkicker/
 
 
 
@@ -19,7 +19,7 @@ and open errored file when CGI script or Rails program cause error.
 
 (for Ruby on Rails)
 
-    $ ruby script/plugin install http://github.com/kwatch/editor-kicker.git/ruby/rails/plugin/editor_kicker
+    $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/rails/plugin/editorkicker
 
 (for CGI/mod_ruby)
 
@@ -27,9 +27,9 @@ You must install cgi-exception library as well as EditorKicker.
 
     ## install EditorKicker
     $ cd /tmp
-    $ wget http://rubyforge.org/projects/editor-kicker/.../editor_kicker
-    $ tar xzf editor-kicker-XXX.tar.gz
-    $ cd editor-kicker-XXX/
+    $ wget http://rubyforge.org/projects/editorkicker/.../editorkicker-XXX.tar.gz
+    $ tar xzf editorkicker-XXX.tar.gz
+    $ cd editorkicker-XXX/
     $ sudo ruby install.rb
   
     ## install cgi-exception
@@ -85,6 +85,26 @@ to be accessible by CGI/mod_ruby process.
     ### assume that CGI script is executed by 'daemon' user.
     $ chmod a+x /tmp/emacs501
     $ sudo chown daemon /tmp/emacs501/server
+
+
+
+== Trouble shooting
+
+
+=== (Emacs) can't find socket
+
+Error:
+
+  emacsclient: can't find socket; have you started the server?
+  To start the server in Emacs, type "M-x server-start".
+
+Solution:
+
+Type 'M-x server start' in your Emacs.
+In addition if you are CGI user, set $EDITOR_KICKER environment variable
+to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" to specify socket
+file by '-s' option.
+(Notice that '-s' optio of emacsclient is available from Emacs 22.)
 
 
 
