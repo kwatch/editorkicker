@@ -1,0 +1,57 @@
+=====================================
+EditorKicker plugin for Ruby on Rails
+=====================================
+
+Release: 0.1.0
+
+
+About
+-----
+
+EditorKicker plugin for Ruby on Rails is a pretty utility to invoke your
+favorite editor and open errored file when error raised in development mode.
+
+
+Target
+------
+
+* Rails version
+  - 2.1.X
+  - 2.0.X
+  - 1.2.X (I hope)
+
+* Supported text editor by default
+  - TextMate
+  - Emacs
+
+
+Usage
+-----
+
+1. Intall EditorKicker plugin into your Rails application.
+2. (optional) Set environtment variable $EDITOR_KICKER with command string to
+   invoke text editor (default "mate -l %s '%s'" or "emacsclient -n +%s '%s').
+3. Restart Rails server in development mode.
+4. Do 'M-x server-start' if you want to use Emacs. (*** IMPORTANT! ***)
+
+
+Setup
+-----
+
+Environment variable $EDITOR_KICKER represents command string to invoke your
+favorite editor with filename and linenum.
+Default is "mate -l %s '%s'" or "emacsclient -n +%s '%s'".
+
+
+Author
+------
+
+makoto kuwata <kwa(at)kuwata-lab.com>
+
+Copyright 2008 kuwata-lab.com all rights reserved.
+
+
+License
+-------
+
+MIT License
