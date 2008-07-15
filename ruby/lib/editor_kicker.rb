@@ -47,10 +47,12 @@ module EditorKicker
         if backtrace.find {|str| tuple = get_location(str) }
           filepath, linenum = tuple
         end
-      elsif error.is_a?(SyntaxError)
-        if error.to_s =~ /^(.+):(\d+): syntax error,/
-          filepath, linenum = $1, $2.to_i
-        end
+      #elsif error.is_a?(SyntaxError)
+      #  if error.to_s =~ /^(.+):(\d+): syntax error,/
+      #    filepath, linenum = $1, $2.to_i
+      #  end
+      elsif error.to_s =~ /\A(.+):(\d+): /  # for SyntaxError
+        filepath, linenum = $1, $2.to_i
       end
       return filepath, linenum
     end
