@@ -1,3 +1,13 @@
+##
+## $Rev$
+## $Release: $
+## $Copyright$
+##
+
+##
+## Notice that this plugin is loaded only when in development mode.
+## So you can commit this plugin into your Rails app repository.
+##
 
 if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
@@ -9,7 +19,7 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
       def initialize(*args)
         super
-        self.check_writable = true
+        self.writable_check = true
       end
 
       ## detect filepath and linenum

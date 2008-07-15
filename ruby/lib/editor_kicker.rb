@@ -27,10 +27,10 @@ module EditorKicker
 
     def initialize
       @kicker = self   # you can set Proc object to @kicker
-      @check_writable = false
+      @writable_check = false
     end
 
-    attr_accessor :command, :kicker, :check_writable
+    attr_accessor :command, :kicker, :writable_check
 
     ## detect error location from error and open related file
     def handle(ex)
@@ -60,7 +60,7 @@ module EditorKicker
     ## get filepath and linenum from string
     def get_location(str)
       return nil if str !~ /^(.+):(\d+)(:in `.+'|$)/
-      return nil if @check_writable && !File.writable?($1)
+      return nil if @writable_check && !File.writable?($1)
       return [$1, $2.to_i]
     end
 
