@@ -11,8 +11,8 @@
 ##
 module EditorKicker
 
-  def self.handle_error(error)
-    self.handler.handle(error)
+  def self.handle_exception(ex)
+    self.handler.handle(ex)
   end
 
   def self.handler
@@ -23,34 +23,36 @@ module EditorKicker
     @@handler = handler
   end
 
-  class ErrorHandler
+  class ExceptionHandler
 
     def initialize
       @kicker = self   # you can set Proc object to @kicker
-      @check_writable = false
+      @writable_check = false
     end
 
-    attr_accessor :command, :kicker, :check_writable
+    attr_accessor :command, :kicker, :writable_check
 
     ## detect error location from error and open related file
-    def handle(error)
-      filepath, linenum = detect_location(error)
+    def handle(ex)
+      filepath, linenum = detect_location(ex)
       kick(filepath, linenum) if filepath && linenum
     end
 
     ## get filename and linenum from error
-    def detect_location(error, backtrace=nil)
+    def detect_location(ex, backtrace=nil)
       filepath = linenum = nil
-      backtrace ||= error.backtrace
+      backtrace ||= ex.backtrace
       if backtrace && !backtrace.empty?
         tuple = nil
         if backtrace.find {|str| tuple = get_location(str) }
           filepath, linenum = tuple
         end
-      elsif error.is_a?(SyntaxError)
-        if error.to_s =~ /^(.+):(\d+): syntax error,/
-          filepath, linenum = $1, $2.to_i
-        end
+      #elsif ex.is_a?(SyntaxEx)
+      #  if ex.to_s =~ /^(.+):(\d+): syntax error,/
+      #    filepath, linenum = $1, $2.to_i
+      #  end
+      elsif ex.to_s =~ /\A(.+):(\d+): /  # for SyntaxError
+        filepath, linenum = $1, $2.to_i
       end
       return filepath, linenum
     end
@@ -58,7 +60,7 @@ module EditorKicker
     ## get filepath and linenum from string
     def get_location(str)
       return nil if str !~ /^(.+):(\d+)(:in `.+'|$)/
-      return nil if @check_writable && !File.writable?($1)
+      return nil if @writable_check && !File.writable?($1)
       return [$1, $2.to_i]
     end
 
@@ -93,6 +95,6 @@ module EditorKicker
 
   end
 
-  self.handler = ErrorHandler.new
+  self.handler = ExceptionHandler.new
 
 end

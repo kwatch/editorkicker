@@ -8,8 +8,12 @@ Release: 0.1.0
 About
 -----
 
-EditorKicker plugin for Ruby on Rails is a pretty utility to invoke your
-favorite editor and open errored file when error raised in development mode.
+EditorKicker is a pretty tool to invoke your favorite editor and
+open errored file automatically when an exception raised on your script.
+This is a plug-in of EditorKicker for Ruby on Rails.
+
+Notice that this plug-in works only under development mode.
+So it is no problem to commit this plug-in files into your app repository.
 
 
 Target

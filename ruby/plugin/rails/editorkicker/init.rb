@@ -1,3 +1,13 @@
+##
+## $Rev$
+## $Release: #{@release} $
+## Copyright 2008 kuwata-lab.com all rights reserved.
+##
+
+##
+## Notice that this plugin is loaded only when in development mode.
+## So you can commit this plugin into your Rails app repository.
+##
 
 if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
@@ -5,31 +15,31 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
   module ::EditorKicker
 
-    class RailsErrorHandler < ErrorHandler
+    class RailsExceptionHandler < ExceptionHandler
 
       def initialize(*args)
         super
-        self.check_writable = true
+        self.writable_check = true
       end
 
       ## detect filepath and linenum
-      def detect_location(error, backtrace=nil)
-        if error.is_a?(ActionView::TemplateError)
-          # assert error.respond_to?(:file_name)
-          # assert error.respond_to?(:line_number)
-          filepath, linenum = error.file_name, error.line_number
+      def detect_location(ex, backtrace=nil)
+        if ex.is_a?(ActionView::TemplateError)
+          # assert ex.respond_to?(:file_name)
+          # assert ex.respond_to?(:line_number)
+          filepath, linenum = ex.file_name, ex.line_number
           if filepath && linenum
             filepath = "app/views/#{filepath}" unless filepath[0] == ?/ || filepath =~ /\Aapp\/views\//
             return filepath, linenum
           end
         end
-        # assert error.respond_to?(:application_backtrace)
-        return super(error, error.application_backtrace)
+        # assert ex.respond_to?(:application_backtrace)
+        return super(ex, ex.application_backtrace)
       end
 
     end
 
-    self.handler = RailsErrorHandler.new
+    self.handler = RailsExceptionHandler.new
 
   end
 
@@ -40,9 +50,9 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
       alias _rescue_action_locally_orig rescue_action_locally   #:nodoc:
 
-      def rescue_action_locally(error)  # :nodoc:
-        ret = _rescue_action_locally_orig(error) # call original
-        ::EditorKicker.handle_error(error)
+      def rescue_action_locally(ex)  # :nodoc:
+        ret = _rescue_action_locally_orig(ex) # call original
+        ::EditorKicker.handle_exception(ex)
         ret
       end
 
