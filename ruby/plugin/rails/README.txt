@@ -29,6 +29,12 @@ Target
   - Emacs
 
 
+Install
+-------
+
+  $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plugin/rails/editorkicker
+
+
 Usage
 -----
 

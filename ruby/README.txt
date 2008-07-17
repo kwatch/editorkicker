@@ -4,6 +4,7 @@ Release: $Release$
 
 $Copyright$
 
+http://editorkicker.rubyforge.org/
 http://rubyforge.org/projects/editorkicker/
 
 
@@ -23,7 +24,7 @@ and open errored file when CGI script or Rails program cause error.
 
 (for CGI/mod_ruby)
 
-You must install cgi-exception library as well as EditorKicker.
+You must install cgi-exception library, too.
 
     ## install EditorKicker
     $ sudo gem install editorkicker
@@ -83,13 +84,12 @@ EditorKicker will detect TextMate or Emacs automatically.
     print "<h1>Hello</h1>"
     ...
 
-If you're Emacs user, you have to make socket file (ex. /tmp/emacsXXX/server)
-to be accessible by CGI/mod_ruby process.
+If you're Emacs user, you have to change owner of socket file
+(ex. '/tmp/emacsXXX/server') to Apache's process user.
 
     ### assume that CGI script is executed by 'daemon' user.
-    $ chmod a+x /tmp/emacs501
-    $ chmod 666 /tmp/emacs501/server
-    $ sudo chown daemon /tmp/emacs501/server
+    ### ('/tmp/emacs501/server' will be created by M-x server-strart)
+    $ sudo chown -R daemon /tmp/emacs501/server
 
 
 
@@ -107,9 +107,9 @@ Solution:
 
 Type 'M-x server start' in your Emacs.
 In addition if you are CGI user, set $EDITOR_KICKER environment variable
-to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" to specify socket
-file by '-s' option.
-(Notice that '-s' optio of emacsclient is available from Emacs 22.)
+to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" in your CGI script
+to specify socket file by '-s' option.
+(Notice that '-s' option of emacsclient is available from Emacs 22.)
 
 
 

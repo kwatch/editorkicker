@@ -12,7 +12,7 @@
 
   <p>Copyright 2008 kuwata-lab.com all rights reserved.</p>
 
-  <p><a href="http://rubyforge.org/projects/editorkicker/">http://rubyforge.org/projects/editorkicker/</a></p>
+  <p>http://editorkicker.rubyforge.org/ <a href="http://rubyforge.org/projects/editorkicker/">http://rubyforge.org/projects/editorkicker/</a></p>
 
   <h2>About</h2>
 
@@ -27,7 +27,7 @@ $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plug
 
   <p>(for CGI/mod_ruby)</p>
 
-  <p>You must install cgi-exception library as well as EditorKicker.</p>
+  <p>You must install cgi-exception library, too.</p>
   <pre>
 ## install EditorKicker
 $ sudo gem install editorkicker
@@ -86,12 +86,11 @@ print "&lt;h1&gt;Hello&lt;/h1&gt;"
 ...
 </pre>
 
-  <p>If you're Emacs user, you have to make socket file (ex. /tmp/emacsXXX/server) to be accessible by CGI/mod_ruby process.</p>
+  <p>If you're Emacs user, you have to change owner of socket file (ex. '/tmp/emacsXXX/server') to Apache's process user.</p>
   <pre>
 ### assume that CGI script is executed by 'daemon' user.
-$ chmod a+x /tmp/emacs501
-$ chmod 666 /tmp/emacs501/server
-$ sudo chown daemon /tmp/emacs501/server
+### ('/tmp/emacs501/server' will be created by M-x server-strart)
+$ sudo chown -R daemon /tmp/emacs501/server
 </pre>
 
   <h2>Trouble shooting</h2>
@@ -106,7 +105,7 @@ To start the server in Emacs, type "M-x server-start".
 
   <p>Solution:</p>
 
-  <p>Type 'M-x server start' in your Emacs. In addition if you are CGI user, set $EDITOR_KICKER environment variable to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" to specify socket file by '-s' option. (Notice that '-s' optio of emacsclient is available from Emacs 22.)</p>
+  <p>Type 'M-x server start' in your Emacs. In addition if you are CGI user, set $EDITOR_KICKER environment variable to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" in your CGI script to specify socket file by '-s' option. (Notice that '-s' option of emacsclient is available from Emacs 22.)</p>
 
   <h2>Todo</h2>
 
