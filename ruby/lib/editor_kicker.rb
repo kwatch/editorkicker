@@ -15,6 +15,10 @@ module EditorKicker
     self.handler.handle(ex)
   end
 
+  class <<self
+    alias handle handle_exception
+  end
+
   def self.handler
     @@handler
   end
