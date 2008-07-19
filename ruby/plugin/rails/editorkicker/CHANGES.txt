@@ -1,4 +1,6 @@
-- release:	0.1.0
-  date:		2008-07-13
-  enhancements:
-    - First released.
+releases:
+
+  - version:	0.1.0
+    date:	2008-07-19
+    enhancements:
+      - First released.

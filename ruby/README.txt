@@ -2,8 +2,6 @@
 
 Release: $Release$
 
-$Copyright$
-
 http://editorkicker.rubyforge.org/
 http://rubyforge.org/projects/editorkicker/
 
@@ -24,7 +22,7 @@ and open errored file when CGI script or Rails program cause error.
 
 (for CGI/mod_ruby)
 
-You must install cgi-exception library, too.
+You must install CGI-Exception library, too.
 
     ## install EditorKicker
     $ sudo gem install editorkicker
@@ -106,6 +104,7 @@ Error:
 Solution:
 
 Type 'M-x server start' in your Emacs.
+
 In addition if you are CGI user, set $EDITOR_KICKER environment variable
 to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" in your CGI script
 to specify socket file by '-s' option.
@@ -115,9 +114,9 @@ to specify socket file by '-s' option.
 
 == Todo
 
-* FastCGI support
 * Merb support
 * Mack support
+* Ramaze support
 
 
 

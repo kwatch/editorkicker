@@ -10,9 +10,7 @@
 
   <p>Release: 0.1.0</p>
 
-  <p>Copyright 2008 kuwata-lab.com all rights reserved.</p>
-
-  <p>http://editorkicker.rubyforge.org/ <a href="http://rubyforge.org/projects/editorkicker/">http://rubyforge.org/projects/editorkicker/</a></p>
+  <p><a href="http://editorkicker.rubyforge.org/">http://editorkicker.rubyforge.org/</a><br /> <a href="http://rubyforge.org/projects/editorkicker/">http://rubyforge.org/projects/editorkicker/</a></p>
 
   <h2>About</h2>
 
@@ -27,7 +25,7 @@ $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plug
 
   <p>(for CGI/mod_ruby)</p>
 
-  <p>You must install cgi-exception library, too.</p>
+  <p>You must install <a href="http://cgi-exception.rubyforge.org/">CGI-Exception</a> library, too.</p>
   <pre>
 ## install EditorKicker
 $ sudo gem install editorkicker
@@ -105,16 +103,18 @@ To start the server in Emacs, type "M-x server-start".
 
   <p>Solution:</p>
 
-  <p>Type 'M-x server start' in your Emacs. In addition if you are CGI user, set $EDITOR_KICKER environment variable to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" in your CGI script to specify socket file by '-s' option. (Notice that '-s' option of emacsclient is available from Emacs 22.)</p>
+  <p>Type 'M-x server start' in your Emacs.</p>
+
+  <p>In addition if you are CGI user, set $EDITOR_KICKER environment variable to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" in your CGI script to specify socket file by '-s' option. (Notice that '-s' option of emacsclient is available from Emacs 22.)</p>
 
   <h2>Todo</h2>
 
   <ul>
-    <li>FastCGI support</li>
-
     <li>Merb support</li>
 
     <li>Mack support</li>
+
+    <li>Ramaze support</li>
   </ul>
 
   <h2>Author</h2>

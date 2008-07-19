@@ -95,8 +95,10 @@ recipes:
           #body.gsub! /\$Copyright\$/, '$(copyright)'
           #body.gsub! /\$License\$/, '$(license)'
 	  body.gsub! /copyright\(c\)/, 'copyright&copy;'
+          body.sub! /http:\/\/$(basename)\.rubyforge\.org\//, '<a href="\&">\&</a><br />'
           body.sub! /http:\/\/rubyforge.org\/projects\/$(basename)\//, '<a href="\&">\&</a>'
           body.sub! /$(basename)-$(release)\.tar\.gz/, "<a href=\"#{download_url}\">\\&</a>"
+	  body.sub! /CGI-Exception/, '<a href="http://cgi-exception.rubyforge.org/">\&</a>'
           html = <<END
         <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
         <html lang="en">
