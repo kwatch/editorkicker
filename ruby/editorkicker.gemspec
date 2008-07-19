@@ -25,8 +25,8 @@ spec = Gem::Specification.new do |s|
   ## files
   files = []
   files += Dir.glob('lib/*')
-  files += %w[README.txt CHANGES.txt MIT-LICENSE setup.rb editorkicker.gemspec]
-  files += Dir.glob('rails/**/*')
+  files += %W[README.txt CHANGES.txt MIT-LICENSE setup.rb #{s.name}.gemspec]
+  files += Dir.glob('plugin/**/*')
   #files += Dir.glob('doc-api/**/*')
   s.files       = files
 end

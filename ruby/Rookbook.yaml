@@ -3,7 +3,7 @@ preparation*: |
       def replace_keywords(files)
 	edit files do |content|
 	  content.gsub! /\$Release\$/,    @release
-	  content.gsub! /\$Release:.*\$/, '$Release: #{@release} $'
+	  content.gsub! /\$Release:.*\$/, "$Release: #{@release} $"
 	  content.gsub! /\$Copyright\$/,  @copyright
 	  content.gsub! /\$Author\$/,     @author
 	  content.gsub! /\$Email\$/,      @email

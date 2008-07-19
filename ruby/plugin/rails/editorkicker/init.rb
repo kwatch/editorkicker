@@ -1,6 +1,6 @@
 ##
 ## $Rev$
-## $Release: #{@release} $
+## $Release: 0.1.0 $
 ## Copyright 2008 kuwata-lab.com all rights reserved.
 ##
 
