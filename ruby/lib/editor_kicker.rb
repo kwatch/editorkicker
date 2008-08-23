@@ -27,14 +27,16 @@ module EditorKicker
     @@handler = handler
   end
 
+
   class ExceptionHandler
 
     def initialize
       @kicker = self   # you can set Proc object to @kicker
       @writable_check = false
+      @user_id = 501   # default unix user id
     end
 
-    attr_accessor :command, :kicker, :writable_check
+    attr_accessor :command, :kicker, :writable_check, :user_id
 
     ## detect error location from error and open related file
     def handle(ex)
@@ -63,8 +65,11 @@ module EditorKicker
 
     ## get filepath and linenum from string
     def get_location(str)
-      return nil if str !~ /^(.+):(\d+)(:in `.+'|$)/
-      return nil if @writable_check && !File.writable?($1)
+      return nil unless str =~ /^(.+):(\d+)(:in `.+'|$)/
+      return nil unless File.exist?($1)
+      if @writable_check
+        return nil unless File.writable?($1) || File.stat($1).uid == @user_id
+      end
       return [$1, $2.to_i]
     end
 
