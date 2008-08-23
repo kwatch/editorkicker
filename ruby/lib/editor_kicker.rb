@@ -28,6 +28,21 @@ module EditorKicker
   end
 
 
+  def self.writable_check
+    return ExceptionHandler.writable_check
+  end
+  def self.writable_check=(flag)
+    ExceptionHandler.writable_check = flag
+  end
+
+  def self.user_id
+    return ExceptionHandler.user_id
+  end
+  def self.user_id=(user_id)
+    ExceptionHandler.user_id = user_id
+  end
+
+
   class ExceptionHandler
 
     @@writable_check = false  # don't check writable permission
