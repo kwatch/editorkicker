@@ -17,10 +17,15 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
     class RailsExceptionHandler < ExceptionHandler
 
-      def initialize(*args)
-        super
-        self.writable_check = true
-      end
+      self.writable_check = true
+      self.user_id = nil
+      #--
+      #def initialize(*args)
+      #  super
+      #  @writable_check = true
+      #  @user_id = false
+      #end
+      #++
 
       ## detect filepath and linenum
       def detect_location(ex, backtrace=nil)
