@@ -30,10 +30,30 @@ module EditorKicker
 
   class ExceptionHandler
 
+    def self.writable_check
+      @@writable_check
+    end
+
+    def self.writable_check=(flag)
+      @@writable_check = flag
+    end
+
+    @@writable_check = false  # don't check writable permission
+
+    def self.user_id
+      @@user_id
+    end
+
+    def self.user_id=(user_id)
+      @@user_id = user_id
+    end
+
+    @@user_id = 501    # default unix user id
+
     def initialize
       @kicker = self   # you can set Proc object to @kicker
-      @writable_check = false
-      @user_id = 501   # default unix user id
+      @writable_check = @@writable_check
+      @user_id = @@user_id
     end
 
     attr_accessor :command, :kicker, :writable_check, :user_id
