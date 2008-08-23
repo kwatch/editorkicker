@@ -73,7 +73,7 @@ module EditorKicker
         if backtrace.find {|str| tuple = get_location(str) }
           filepath, linenum = tuple
         end
-      #elsif ex.is_a?(SyntaxEx)
+      #elsif ex.is_a?(SyntaxError)
       #  if ex.to_s =~ /^(.+):(\d+): syntax error,/
       #    filepath, linenum = $1, $2.to_i
       #  end
@@ -87,9 +87,8 @@ module EditorKicker
     def get_location(str)
       return nil unless str =~ /^(.+):(\d+)(:in `.+'|$)/
       return nil unless File.exist?($1)
-      if @writable_check
-        return nil unless File.writable?($1) || File.stat($1).uid == @user_id
-      end
+      return nil unless @writable_check && File.writable?($1) ||
+                        @user_id && File.stat($1).uid == @user_id
       return [$1, $2.to_i]
     end
 
