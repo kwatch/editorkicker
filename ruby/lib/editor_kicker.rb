@@ -63,6 +63,9 @@ module EditorKicker
     def detect_location(ex, backtrace=nil)
       filepath = linenum = nil
       backtrace ||= ex.backtrace
+      @include, @exclude = detect_paths()
+      $stderr.puts "*** debug: @include=#{@include.inspect}"
+      $stderr.puts "*** debug: @exclude=#{@exclude.inspect}"
       if backtrace && !backtrace.empty?
         tuple = nil
         if backtrace.find {|str| tuple = get_location(str) }
@@ -78,12 +81,24 @@ module EditorKicker
       return filepath, linenum
     end
 
+    def _match_to(filename, path_list)
+      return path_list.any? {|path|
+        $stderr.puts "*** debug: filename[0, path.length]=#{filename[0, path.length].inspect}"
+        filename[0, path.length] == path }
+    end
+
     ## get filepath and linenum from string
     def get_location(str)
       return nil unless str =~ /^(.+):(\d+)(:in `.+'|$)/
-      return nil unless File.exist?($1)
-      return nil unless @writable_check && File.writable?($1)
-      return [$1, $2.to_i]
+      filename, linenum = $1, $2.to_i
+      arr = [filename, linenum]
+      return nil unless File.exist?(filename)
+      $stderr.puts "*** debug: _match_to(filename, @include)=#{_match_to(filename, @include).inspect}"
+      $stderr.puts "*** debug: _match_to(filename, @exclude)=#{_match_to(filename, @exclude).inspect}"
+      return arr if _match_to(filename, @include)
+      return nil if _match_to(filename, @exclude)
+      return nil if @writable_check && !File.writable?(filename)
+      return arr
     end
 
     ## detect command to invoke editor
@@ -93,6 +108,15 @@ module EditorKicker
       bin = '/Applications/TextMate.app/Contents/Resources/mate'
       return "#{bin} -l %s '%s'" if test(?f, bin)
       return "emacsclient -n +%s '%s'"
+    end
+
+    def detect_paths
+      sep = File::PATH_SEPARATOR
+      s = ENV['EDITOR_KICKER_INCLUDE']
+      include = s ? s.split(sep) : []
+      s = ENV['EDITOR_KICKER_EXCLUDE']
+      exclude = s ? s.split(sep) : []
+      return include, exclude
     end
 
     ## open file with editor

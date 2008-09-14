@@ -28,9 +28,9 @@ You must install CGI-Exception library, too.
     $ sudo gem install editorkicker
     ## or
     $ cd /tmp
-    $ wget http://rubyforge.org/projects/editorkicker/.../editorkicker-XXX.tar.gz
-    $ tar xzf editorkicker-XXX.tar.gz
-    $ cd editorkicker-XXX/
+    $ wget http://rubyforge.org/projects/editorkicker/.../editorkicker-$Release$.tar.gz
+    $ tar xzf editorkicker-$Release$.tar.gz
+    $ cd editorkicker-$Release$/
     $ sudo ruby install.rb
   
     ## install cgi-exception
@@ -42,8 +42,8 @@ You must install CGI-Exception library, too.
     $ cd cgi-exception-XXX/
     $ sudo ruby install.rb
 
-It is not recommended to install by RubyGems, because 'require rubygems'
-is an heavy-weight operation for CGI.
+It is not recommended to install libraries by RubyGems, because
+'require rubygems' is an heavy-weight operation for CGI.
 
 
 
@@ -75,7 +75,14 @@ EditorKicker will detect TextMate or Emacs automatically.
       ## for Emacs
       emacsclient = '/Applications/Emacs.app/Contents/MacOS/bin/emacsclient'
       ENV['EDITOR_KICKER'] = "#{emacsclient} -n -s /tmp/emacs501/server +%s '%s'"
+      ## for NetBeans
+      netbeans = "#{ENV['HOME']}/netbeans-6.1/bin/netbeans"
+      ENV['EDITOR_KICKER'] = "#{netbeans} --open %2$s:%1$s"
     end
+
+    ## you can specify include and/or exclude path to find file.
+    ENV['EDITOR_KICKER_INCLUDE'] = '/usr/local/lib/ruby/1.8/site_ruby'
+    ENV['EDITOR_KICKER_EXCLUDE'] = '/usr/local/lib:/usr/lib'
     
     cgi = CGI.new
     print cgi.header
@@ -87,7 +94,7 @@ If you're Emacs user, you have to change owner of socket file
 
     ### assume that CGI script is executed by 'daemon' user.
     ### ('/tmp/emacs501/server' will be created by M-x server-strart)
-    $ sudo chown -R daemon /tmp/emacs501/server
+    $ sudo chown -R daemon /tmp/emacs501
 
 
 
@@ -105,7 +112,7 @@ Solution:
 
 Type 'M-x server start' in your Emacs.
 
-In addition if you are CGI user, set $EDITOR_KICKER environment variable
+In addition if you are CGI user, set ENV['EDITOR_KICKER'] environment variable
 to "emacsclient -n -s /tmp/emacs501/server +%s '%s'" in your CGI script
 to specify socket file by '-s' option.
 (Notice that '-s' option of emacsclient is available from Emacs 22.)
