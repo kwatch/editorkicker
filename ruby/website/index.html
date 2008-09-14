@@ -61,6 +61,11 @@ $ ruby script/server          # development mode
 
   <p>Setting of $EDITOR_KICKER is optional. If $EDITOR_KICKER is not set, EditorKicker will detect TextMate or Emacs automatically.</p>
 
+  <p>In addition, $EDITOR_KICKER_INCLUDE and $EDITOR_KICKER_EXCLUDE represents include and exclude path to find file.</p>
+  <pre>
+$ export EDITOR_KICKER_EXCLUDE='/usr:/opt:./vendor/plugins'
+</pre>
+
   <p>(for CGI/mod_ruby)</p>
   <pre>
 #!/usr/bin/env ruby

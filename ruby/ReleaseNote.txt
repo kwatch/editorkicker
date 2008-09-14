@@ -18,6 +18,10 @@ environment variable $EDITOR_KICKER_INCLUDE and $EDITOR_KICKER_EXCLUDE.
 
 See http://editorkicker.rubyforge.org/ for details.
 
+--
+regards,
+makoto kuwata
+
 --------------------------------------------------------------------------------
 
 EditorKicker 0.1.0 released
