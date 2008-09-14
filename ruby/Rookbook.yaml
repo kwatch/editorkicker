@@ -19,7 +19,7 @@ properties:
   - basename:	editorkicker
   - libfile:	lib/editor_kicker.rb
   - copyright:  Copyright 2008 kuwata-lab.com all rights reserved.
-  - release:	0.1.0
+  - release:	0.2.0
   - author:	makoto kuwata
   - email:	kwa(at)kuwata-lab.com
   - license:	MIT License
@@ -56,7 +56,7 @@ recipes:
 	mkdir_p dir
 	## copy files
 	cp %W[MIT-LICENSE README.txt CHANGES.txt setup.rb #{@basename}.gemspec], dir
-	store @libfile, dir
+	store @libfile, 'spec/**/*', dir
 	## copy rails plug-in
 	store "plugin/rails/#{@basename}/**/*", dir
 	## edit files

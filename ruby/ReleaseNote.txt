@@ -1,0 +1,34 @@
+--------------------------------------------------------------------------------
+EditorKicker 0.2.0 released
+
+EditorKicker is a pretty tool to invoke your favorite editor (TextMate or
+Emacs) and open errored file automatically when an exception raised on
+your Ruby script.
+
+If you are Rails user, try
+
+   $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plugin/rails/editorkicker
+
+to install EditorKicker plugin for your Ruby on Rails application.
+
+In this release, it is able to specify include and/or exclude path by
+environment variable $EDITOR_KICKER_INCLUDE and $EDITOR_KICKER_EXCLUDE.
+
+   $ export EDITOR_KICKER_EXCLUDE='/usr/local:/opt/local:./vendor/plugins'
+
+See http://editorkicker.rubyforge.org/ for details.
+
+--------------------------------------------------------------------------------
+
+EditorKicker 0.1.0 released
+
+EditorKicker is a pretty tool to invoke your favorite editor (TextMate or
+Emacs) and open errored file automatically when an exception raised on
+your Ruby script.
+
+If you are Rails user, try
+   $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plugin/rails/editorkicker
+to install EditorKicker plugin for your Ruby on Rails application.
+
+See http://editorkicker.rubyforge.org/ for details.
+

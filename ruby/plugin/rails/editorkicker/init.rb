@@ -1,6 +1,6 @@
 ##
 ## $Rev$
-## $Release: 0.1.0 $
+## $Release: 0.2.0 $
 ## Copyright 2008 kuwata-lab.com all rights reserved.
 ##
 
@@ -17,10 +17,13 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
 
     class RailsExceptionHandler < ExceptionHandler
 
-      def initialize(*args)
-        super
-        self.writable_check = true
-      end
+      self.writable_check = true
+      #--
+      #def initialize(*args)
+      #  super
+      #  @writable_check = true
+      #end
+      #++
 
       ## detect filepath and linenum
       def detect_location(ex, backtrace=nil)

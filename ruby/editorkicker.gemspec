@@ -28,6 +28,7 @@ spec = Gem::Specification.new do |s|
   files += %W[README.txt CHANGES.txt MIT-LICENSE setup.rb #{s.name}.gemspec]
   files += Dir.glob('plugin/**/*')
   #files += Dir.glob('doc-api/**/*')
+  files += Dir.glob('spec/**/*')
   s.files       = files
 end
 

@@ -60,6 +60,12 @@ ATTENTION!  Don't forget to call 'M-x server-start' if you're Emacs user.
 Setting of $EDITOR_KICKER is optional. If $EDITOR_KICKER is not set,
 EditorKicker will detect TextMate or Emacs automatically.
 
+In addition, $EDITOR_KICKER_INCLUDE and $EDITOR_KICKER_EXCLUDE represents
+include and exclude path to find file.
+
+    $ export EDITOR_KICKER_EXCLUDE='/usr:/opt:./vendor/plugins'
+
+
 (for CGI/mod_ruby)
 
     #!/usr/bin/env ruby

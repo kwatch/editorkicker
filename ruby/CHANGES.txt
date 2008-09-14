@@ -1,5 +1,16 @@
 releases:
 
+  - version:	0.2.0
+    date:	2008-09-15
+    enhancements:
+      - |
+	Support ENV['EDITOR_KICKER_INCLUDE'] and ENV['EDITOR_KICKER_EXCLUDE']
+	to specify include or exclude path explicitly.
+
+	  ## bash
+	  export EDITOR_KICKER_INCLUDE='/usr/lib/ruby/site-ruby/1.8'
+	  export EDITOR_KICKER_EXCLUDE='/usr/lib/ruby:./'
+
   - version:	0.1.0
     date:	2008-07-19
     enhancements:
