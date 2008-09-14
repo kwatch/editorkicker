@@ -18,12 +18,10 @@ if defined?(RAILS_ENV) && RAILS_ENV == 'development'
     class RailsExceptionHandler < ExceptionHandler
 
       self.writable_check = true
-      self.user_id = nil
       #--
       #def initialize(*args)
       #  super
       #  @writable_check = true
-      #  @user_id = false
       #end
       #++
 
