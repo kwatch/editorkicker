@@ -81,8 +81,8 @@ EditorKicker will detect TextMate or Emacs automatically.
     end
 
     ## you can specify include and/or exclude path to find file.
-    ENV['EDITOR_KICKER_INCLUDE'] = '/usr/local/lib/ruby/1.8/site_ruby'
-    ENV['EDITOR_KICKER_EXCLUDE'] = '/usr/local/lib:/usr/lib'
+    ENV['EDITOR_KICKER_INCLUDE'] = '/usr/local/lib/ruby/1.8/site_ruby:./lib'
+    ENV['EDITOR_KICKER_EXCLUDE'] = '/usr/local/lib:/opt/local/lib'
     
     cgi = CGI.new
     print cgi.header

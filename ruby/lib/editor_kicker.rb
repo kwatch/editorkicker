@@ -64,8 +64,6 @@ module EditorKicker
       filepath = linenum = nil
       backtrace ||= ex.backtrace
       @include, @exclude = detect_paths()
-      $stderr.puts "*** debug: @include=#{@include.inspect}"
-      $stderr.puts "*** debug: @exclude=#{@exclude.inspect}"
       if backtrace && !backtrace.empty?
         tuple = nil
         if backtrace.find {|str| tuple = get_location(str) }
@@ -83,7 +81,6 @@ module EditorKicker
 
     def _match_to(filename, path_list)
       return path_list.any? {|path|
-        $stderr.puts "*** debug: filename[0, path.length]=#{filename[0, path.length].inspect}"
         filename[0, path.length] == path }
     end
 
@@ -93,8 +90,6 @@ module EditorKicker
       filename, linenum = $1, $2.to_i
       arr = [filename, linenum]
       return nil unless File.exist?(filename)
-      $stderr.puts "*** debug: _match_to(filename, @include)=#{_match_to(filename, @include).inspect}"
-      $stderr.puts "*** debug: _match_to(filename, @exclude)=#{_match_to(filename, @exclude).inspect}"
       return arr if _match_to(filename, @include)
       return nil if _match_to(filename, @exclude)
       return nil if @writable_check && !File.writable?(filename)
@@ -136,7 +131,7 @@ module EditorKicker
     end
 
     def log(message)
-      $stderr.puts "** [EditorKicker] #{message}"
+      $stderr << "** [EditorKicker] #{message}\n"
     end
 
   end
