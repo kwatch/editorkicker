@@ -1,5 +1,57 @@
 --------------------------------------------------------------------------------
+merb_editorkicker plugin 0.2.0 released.
+
+This plug-in for Merb enables you to invoke not only TextMate but
+also Emacs, Emacs, NetBeans, Aptana, and so on when you click
+line number on error page.
+
+Notice that this plug-in works only under development mode.
+So it is no problem to commit this plug-in files into your app repository.
+
+
+Install & Setup
+---------------
+
+1. sudo gem install merb_editorkicker
+2. Add "dependency 'merb_editorkicker'" into 'config/dependencies.rb'.
+3. Set ENV['EDITOR_KICKER'] in 'config/environments/development.rb' (see example).
+
+If you don't set ENV['EDITOR_KICKER'], the original 'txmt://open?url...'
+protocol will be used.
+
+
+Example
+-------
+
+config/dependencies.rb:
+
+    dependency 'merb_editorkicker'
+
+
+config/environments/development.rb:
+
+    ENV['EDITOR_KICKER'] = "/Applications/TextMate.app/Contents/Resources/mate -l %s %s"   # for TextMate
+    ENV['EDITOR_KICKER'] = "emacsclient -n +%s %s"    # for Emacs (Don't forget M-x server-start)
+    ENV['EDITOR_KICKER'] = "netbeans %2$s:%1$s"       # for NetBeans
+    ENV['EDITOR_KICKER'] = "java -jar eclipsecall.jar %2$s -G%1$s"  # for EclipseCall plugin
+    ENV['EDITOR_KICKER'] = "open %2$s"                # other
+
+
+EclipseCall Plug-in
+-------------------
+
+If you want to invoke Aptana or Eclipse, you must install EclipseCall plug-in.
+See README of merb_editorkicker for details.
+
+
+
+--------------------------------------------------------------------------------
 EditorKicker 0.2.0 released
+
+EditorKicker 0.2.0 released.
+
+* <a href="http://rubyforge.org/projects/editorkicker/">http://rubyforge.org/projects/editorkicker/</a>
+* <a href="http://editorkicker.rubyforge.org/">http://editorkicker.rubyforge.org/</a>
 
 EditorKicker is a pretty tool to invoke your favorite editor (TextMate or
 Emacs) and open errored file automatically when an exception raised on
@@ -7,16 +59,16 @@ your Ruby script.
 
 If you are Rails user, try
 
-   $ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plugin/rails/editorkicker
+	$ ruby script/plugin install http://github.com/kwatch/editorkicker.git/ruby/plugin/rails/editorkicker
 
 to install EditorKicker plugin for your Ruby on Rails application.
 
 In this release, it is able to specify include and/or exclude path by
 environment variable $EDITOR_KICKER_INCLUDE and $EDITOR_KICKER_EXCLUDE.
 
-   $ export EDITOR_KICKER_EXCLUDE='/usr/local:/opt/local:./vendor/plugins'
+	$ export EDITOR_KICKER_EXCLUDE='/usr/local:/opt/local:./vendor/plugins'
 
-See http://editorkicker.rubyforge.org/ for details.
+See <a href="http://editorkicker.rubyforge.org/">http://editorkicker.rubyforge.org/</a> for details.
 
 --
 regards,

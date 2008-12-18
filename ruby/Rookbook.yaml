@@ -46,6 +46,26 @@ recipes:
 	## edit files
 	replace_keywords("#{dir}/**/*")
 
+  - product:	:merb
+    desc:	build merb_editorkicker.gem
+    method*: |
+	## create build directory
+	basename = 'merb_editorkicker'
+	dir = "build/#{basename}"
+	rm_rf "build/#{basename}*"
+	mkdir_p dir
+	## copy files
+	cp %W[MIT-LICENSE setup.rb], dir
+	chdir "plugin/merb" do
+	  store '*', '**/*', "../../#{dir}"
+	end
+	## edit files
+	replace_keywords("#{dir}/**/*")
+	chdir dir do
+	  `ruby #{basename}.gemspec`
+	  mv "#{basename}-#{@release}.gem", '..'
+	end
+
   - product:	:packages
     ingreds:	[ :rails ]
     method*: |
