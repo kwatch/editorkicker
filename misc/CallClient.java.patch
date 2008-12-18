@@ -1,0 +1,17 @@
+diff -r 5749ec23de45 CallClient.java
+--- a/CallClient.java	Wed Nov 12 11:50:48 2008 +0900
++++ b/CallClient.java	Wed Nov 12 12:35:44 2008 +0900
+@@ -43,7 +43,12 @@
+ 				System.exit(-1);
+ 			}
+ 			int i = 0;
+-			call = args[0];
++			try {
++				call = new File(args[0]).getCanonicalPath();
++			}
++			catch (IOException ex) {
++				call = args[0];
++			}
+ 			while (i < args.length-1 && !args[i+1].startsWith("-")) {
+ 				call += " " + args[i+1];
+ 				i++;
